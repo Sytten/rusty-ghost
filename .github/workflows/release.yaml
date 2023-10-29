@@ -42,7 +42,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v3
         with:
-          context: ./distribution
+          context: .
           push: true
           tags: |
             sytten/rusty-ghost:latest
