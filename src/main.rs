@@ -1,5 +1,6 @@
 use clap::Parser;
 use simple_proxy::{Environment, SimpleProxy};
+use tokio::signal;
 
 use self::config::GhostConfig;
 use self::middleware::GhostMiddleware;
@@ -21,5 +22,8 @@ async fn main() {
 
     proxy.add_middleware(Box::new(GhostMiddleware::new(&config)));
 
-    let _ = proxy.run().await;
+    tokio::select! {
+      _ = proxy.run() => {},
+      _ = signal::ctrl_c() =>{},
+    }
 }
