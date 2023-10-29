@@ -45,4 +45,4 @@ jobs:
           push: true
           tags: |
             sytten/rusty-ghost:latest
-            sytten/rusty-ghost:${{ needs.meta.outputs.version }}
+            sytten/rusty-ghost:${{ needs.meta.outputs.tag }}
