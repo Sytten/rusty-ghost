@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  meta:
+    name: Verify release
+    runs-on: ubuntu-latest
+
+    outputs:
+      valid: ${{ steps.check-tag.outputs.valid }}
+
+    steps:
+      - name: Check Tag
+        id: check-tag
+        run: |
+          if [[ ${{ github.ref }} =~ ^refs/tags/[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              TAG=$(echo ${{ github.ref }} | cut -d / -f 3)
+              echo "tag=${TAG}" >> $GITHUB_OUTPUT
+              echo "valid=true" >> $GITHUB_OUTPUT
+          fi
+
+  build:
+    if: needs.meta.outputs.valid == 'true'
+    name: Release Docker
+    runs-on: ubuntu-latest
+    needs: meta
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: caidobot
+          password: ${{ secrets.CD_DOCKERHUB }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./distribution
+          push: true
+          tags: |
+            sytten/rusty-ghost:latest
+            sytten/rusty-ghost:${{ needs.meta.outputs.version }}

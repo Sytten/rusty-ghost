@@ -17,14 +17,14 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Checkout project
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
 
       - name: Run linter
-        uses: giraffate/clippy-action@v1
+        uses: giraffate/clippy-action@871cc4173f2594435c7ea6b0bce499cf6c2164a1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           clippy_flags: --all-features -- -D warnings
