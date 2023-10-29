@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
+      tag: ${{ steps.check-tag.outputs.tag }}
       valid: ${{ steps.check-tag.outputs.valid }}
 
     steps:
