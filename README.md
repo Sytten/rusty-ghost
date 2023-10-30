@@ -17,3 +17,9 @@
 ## Usage
 
 TBA
+
+## Inspirations
+
+- [Ratio Ghost](https://github.com/ratioghost/ratioghost)
+- [cheatproxy](https://github.com/drguildo/cheatproxy)
+- [Torrent Ratio Proxy](https://github.com/warren-bank/node-torrent-client-ratio-modifier-http-proxy)
