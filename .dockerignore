@@ -1,2 +1,6 @@
 target/
+.github/
 Dockerfile
+README.md
+LICENSE
+.gitignore

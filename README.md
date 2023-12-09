@@ -30,7 +30,12 @@ We provide a general certificate authority, but you can generate your own if you
 2. You can hit `Enter` to accept most default options, but fill at least a `Common Name`
 3. You have to override the certificate in docker
    - By rebuilding it `docker build -t rusty-ghost:latest`
-   - By mounting a volume on top on existing keys `docker run -v /path/to/cert.cer:/ca/rusty-ghost.cer -v /path/to/private.key:/ca/rusty-ghost.key sytten/rusty-ghost`
+   - By mounting a volume on top on existing keys `docker run -v /path/to/cert.crt:/ca/rusty-ghost.crt -v /path/to/private.key:/ca/rusty-ghost.key sytten/rusty-ghost`
+
+## Trust the CA
+
+For the `https` trackers to work, the bittorrent client will have to trust the Certificate Authority of Rusty Ghost.
+This is different for each OS and client so we won't explain it here how to do it.
 
 ## Inspirations
 
