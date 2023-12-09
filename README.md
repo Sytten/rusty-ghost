@@ -16,7 +16,21 @@
 
 ## Usage
 
-TBA
+With Docker:
+`docker run -p 3773:3773 sytten/rusty-ghost`
+
+With cargo:
+`cargo run -- --port 3773 --zero-dl --private-key ./ca/rusty-ghost.key --ca-cert ./ca/rusty-ghost.cer`
+
+## Generate CA
+
+We provide a general certificate authority, but you can generate your own if you prefer.
+
+1. In the `ca` folder run `openssl re
+2. You can hit `Enter` to accept most default options, but fill at least a `Common Name`
+3. You have to override the certificate in docker
+   - By rebuilding it `docker build -t rusty-ghost:latest`
+   - By mounting a volume on top on existing keys `docker run -v /path/to/cert.cer:/ca/rusty-ghost.cer -v /path/to/private.key:/ca/rusty-ghost.key sytten/rusty-ghost`
 
 ## Inspirations
 

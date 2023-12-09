@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::Parser;
 
 #[derive(Parser, Clone, Debug)]
@@ -10,7 +12,15 @@ pub struct GhostConfig {
     #[clap(long)]
     pub zero_dl: bool,
 
-    // Adds the download amount to left
+    /// Adds the download amount to left
     #[clap(long)]
     pub intact_left: bool,
+
+    /// Certificate authority private key path
+    #[clap(long)]
+    pub private_key: PathBuf,
+
+    /// Certificate authority certificate path
+    #[clap(long)]
+    pub ca_cert: PathBuf,
 }

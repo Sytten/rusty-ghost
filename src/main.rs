@@ -1,29 +1,42 @@
+use std::net::SocketAddr;
+
 use clap::Parser;
-use simple_proxy::{Environment, SimpleProxy};
+use hudsucker::Proxy;
 use tokio::signal;
 
 use self::config::GhostConfig;
-use self::middleware::GhostMiddleware;
+use self::handler::GhostHandler;
 
 mod action;
+mod authority;
+mod client;
 mod config;
+mod handler;
 mod http;
 mod keywords;
 mod logging;
-mod middleware;
 mod modifier;
+
+async fn shutdown_signal() {
+    signal::ctrl_c()
+        .await
+        .expect("Failed to install CTRL+C signal handler");
+}
 
 #[tokio::main]
 async fn main() {
     let config = GhostConfig::parse();
     logging::init();
 
-    let mut proxy = SimpleProxy::new(config.port, Environment::Production);
+    let ca = authority::load(&config).await;
+    let proxy = Proxy::builder()
+        .with_addr(SocketAddr::from(([0, 0, 0, 0], config.port)))
+        .with_client(client::build())
+        .with_ca(ca)
+        .with_http_handler(GhostHandler::new(&config))
+        .build();
 
-    proxy.add_middleware(Box::new(GhostMiddleware::new(&config)));
-
-    tokio::select! {
-      _ = proxy.run() => {},
-      _ = signal::ctrl_c() =>{},
+    if let Err(e) = proxy.start(shutdown_signal()).await {
+        log::error!("Proxy error: {:?}", e);
     }
 }

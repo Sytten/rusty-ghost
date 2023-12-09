@@ -11,7 +11,7 @@ use crate::http::QueryString;
 use crate::keywords::*;
 use crate::logging;
 
-#[derive(TypedBuilder)]
+#[derive(TypedBuilder, Clone)]
 pub struct GhostModifier {
     #[builder(default = false)]
     zero_dl: bool,
